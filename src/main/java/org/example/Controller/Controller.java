@@ -23,6 +23,10 @@ public class Controller {
       int value = getView().getSlider().getValue();
       getModel().setArraySize(value);
     });
+
+    getView().getComboBox().addActionListener(e -> {
+      System.out.println("You have chosen " + getView().getComboBox().getSelectedItem());
+    });
   }
 
   public void sort(){

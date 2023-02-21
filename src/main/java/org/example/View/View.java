@@ -8,27 +8,25 @@ import org.example.Model.Model;
 public class View extends JFrame {
 
   private Model model;
-  private JPanel mainPanel;
-  private Bar[] bars;
+  private final JPanel mainPanel;
   private JPanel wrapper;
-  JSlider slider;
+  private JSlider slider;
+  private JComboBox comboBox;
 
   public View(){
+
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     setSize(1250, 750);
     mainPanel = new JPanel();
     mainPanel.setBackground(Color.BLACK);
     mainPanel.setLayout(new BorderLayout());
 
-    mainPanel.add(wrapper = new JPanel(), BorderLayout.CENTER);
-    addSlider();
-    add(mainPanel);
-    mainPanel.add(new JPanel(), BorderLayout.SOUTH);
-    setVisible(true);
-  }
+    addMenuPanel();
+    addWrapperPanel();
+    addFooterPanel();
 
-  public Model getModel() {
-    return model;
+    add(mainPanel);
+    setVisible(true);
   }
 
   public void setModel(Model model) {
@@ -36,21 +34,24 @@ public class View extends JFrame {
   }
 
   public void update(){
-    updateInput();
+    addWrapperPanel();
     updateDelay();
     updateSortingAlgorithm();
   }
 
-  private void updateInput(){
-    mainPanel.remove(wrapper);
+  private void addWrapperPanel(){
+    if(model == null)
+      return;
+    if(wrapper != null)
+      mainPanel.remove(wrapper);
     wrapper = new JPanel();
     int arrayLength = model.getInputLength();
-    int array[] = model.getArray();
+    int[] array = model.getArray();
     wrapper.setLayout(new GridLayout(1, arrayLength));
     if(arrayLength > 0 ){
-      bars = new Bar[model.getInputLength()];
+      Bar[] bars = new Bar[model.getInputLength()];
       for(int i=0; i<arrayLength; ++i){
-        bars[i] = new Bar(1, arrayLength, array[i]);
+        bars[i] = new Bar(arrayLength, array[i]);
         wrapper.add(bars[i]);
       }
     }
@@ -66,15 +67,37 @@ public class View extends JFrame {
 
   }
 
-  private void addSlider(){
-    slider = new JSlider(JSlider.HORIZONTAL, 10, 100, 30);
-
+  private void addMenuPanel(){
     JPanel panel = new JPanel();
-    panel.add(slider);
+    panel.setLayout(new GridLayout(2,3));
+
+    panel.add(new JTextArea("INFO 1"));
+
+
+    String[] sortingAlgs = {"BubbleSort", "QuickSort", "MergeSort"};
+    panel.add(comboBox = new JComboBox(sortingAlgs));
+
+
+    panel.add(new JButton("START"));
+    panel.add(new JSlider(JSlider.HORIZONTAL, 1, 10, 5));
+    panel.add(slider = new JSlider(JSlider.HORIZONTAL, 10, 100, 30));
+    panel.add(new JButton("RESET"));
+
     mainPanel.add(panel, BorderLayout.NORTH);
+  }
+
+  private void addFooterPanel(){
+    JTextArea area = new JTextArea("Created by Krzysztof Wiśniewski");
+    area.setMinimumSize(new Dimension(100, 50));
+    add(area, BorderLayout.SOUTH);
+
   }
 
   public JSlider getSlider(){
     return slider;
+  }
+
+  public JComboBox getComboBox(){
+    return comboBox;
   }
 }
