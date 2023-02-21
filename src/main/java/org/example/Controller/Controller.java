@@ -14,6 +14,15 @@ public class Controller {
 
     model.addObserver(view);
     view.setModel(model);
+
+    addListeners();
+  }
+
+  private void addListeners(){
+    getView().getSlider().addChangeListener(e -> {
+      int value = getView().getSlider().getValue();
+      getModel().setArraySize(value);
+    });
   }
 
   public void sort(){
@@ -37,11 +46,11 @@ public class Controller {
   }
 
   public void setInput(int[] input){
-    model.setInput(input);
+    model.setArray(input);
   }
 
   public int[] getInput(){
-    return model.getInput();
+    return model.getArray();
   }
 
   public void setSortingAlgorithm(SortingAlgorithm sortingAlgorithm){

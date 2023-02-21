@@ -2,13 +2,16 @@ package org.example.Model;
 
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Random;
+
 import org.example.Model.Strategy.SortingAlgorithm;
 import org.example.View.View;
 
 public class Model extends Observable {
 
   private ArrayList<View> observers = new ArrayList<>();
-  private int[] input;
+  private int[] array;
+  private int inputLength;
   private SortingAlgorithm sortingAlgorithm;
   private int delay;
   public Model(){
@@ -47,18 +50,38 @@ public class Model extends Observable {
     update();
   }
 
-  public int[] getInput() {
-    return input;
+  public int[] getArray() {
+    return array;
   }
 
   public int getInputLength(){
-    if(input != null)
-      return input.length;
+    if(array != null)
+      return array.length;
     return 0;
   }
 
-  public void setInput(int[] input) {
-    this.input = input;
+  public void setArray(int[] array) {
+    this.array = array;
+    update();
+  }
+
+  public void setArraySize(int value){
+
+    array = new int[value];
+
+    for(int i=0; i<value; ++i){
+      array[i] = i+1;
+    }
+
+    Random rand = new Random();
+
+    for (int i = 0; i < array.length; i++) {
+      int randomIndexToSwap = rand.nextInt(array.length);
+      int temp = array[randomIndexToSwap];
+      array[randomIndexToSwap] = array[i];
+      array[i] = temp;
+    }
+
     update();
   }
 }
