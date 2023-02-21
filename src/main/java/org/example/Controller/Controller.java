@@ -1,5 +1,7 @@
 package org.example.Controller;
 
+import org.example.Model.Strategy.BubbleSort;
+import org.example.Model.Strategy.QuickSort;
 import org.example.Model.Strategy.SortingAlgorithm;
 import org.example.Model.Model;
 import org.example.View.View;
@@ -16,6 +18,7 @@ public class Controller {
     view.setModel(model);
 
     addListeners();
+    view.update();
   }
 
   private void addListeners(){
@@ -25,12 +28,22 @@ public class Controller {
     });
 
     getView().getComboBox().addActionListener(e -> {
-      System.out.println("You have chosen " + getView().getComboBox().getSelectedItem());
+      String chosen = (String) getView().getComboBox().getSelectedItem();
+      System.out.println(chosen);
+
+      if(chosen.equals("QuickSort"))
+        model.setSortingAlgorithm(new QuickSort(getModel()));
+      else
+        model.setSortingAlgorithm(new BubbleSort(getModel()));
     });
-  }
 
-  public void sort(){
-
+    getView().getStartButton().addActionListener(e -> {
+      try {
+        getModel().sort();
+      } catch (InterruptedException ex) {
+        throw new RuntimeException(ex);
+      }
+    });
   }
 
   public Model getModel() {
@@ -47,10 +60,6 @@ public class Controller {
 
   public void setView(View view) {
     this.view = view;
-  }
-
-  public void setInput(int[] input){
-    model.setArray(input);
   }
 
   public int[] getInput(){

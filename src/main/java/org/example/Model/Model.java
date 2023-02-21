@@ -11,19 +11,14 @@ public class Model extends Observable {
 
   private ArrayList<View> observers = new ArrayList<>();
   private int[] array;
-  private int inputLength;
   private SortingAlgorithm sortingAlgorithm;
-  private int delay;
+  private int delay = 5;
   public Model(){
-
+    setArraySize(30);
   }
 
   public void addObserver(View view){
     observers.add(view);
-  }
-
-  public void deleteObserver(View view){
-    observers.remove(view);
   }
 
   public void update(){
@@ -60,7 +55,7 @@ public class Model extends Observable {
     return 0;
   }
 
-  public void setArray(int[] array) {
+  public void setArray(int[] array){
     this.array = array;
     update();
   }
@@ -83,5 +78,10 @@ public class Model extends Observable {
     }
 
     update();
+  }
+
+  public void sort() throws InterruptedException {
+    Thread thread = new Thread(sortingAlgorithm);
+    thread.start();
   }
 }

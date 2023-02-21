@@ -5,6 +5,7 @@ import javax.swing.*;
 
 import org.example.Model.Model;
 
+
 public class View extends JFrame {
 
   private Model model;
@@ -12,9 +13,9 @@ public class View extends JFrame {
   private JPanel wrapper;
   private JSlider slider;
   private JComboBox comboBox;
+  private JButton startButton;
 
   public View(){
-
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     setSize(1250, 750);
     mainPanel = new JPanel();
@@ -35,8 +36,37 @@ public class View extends JFrame {
 
   public void update(){
     addWrapperPanel();
-    updateDelay();
-    updateSortingAlgorithm();
+  }
+
+  private void addMenuPanel(){
+    JPanel panel = new JPanel();
+    panel.setLayout(new GridLayout(2,3));
+
+    //Info about selected values
+    panel.add(new JTextArea("INFO 1"));
+
+    //Choosing soring algorithm
+    String[] sortingAlgs = {"QuickSort", "MergeSort", "BubbleSort"};
+    panel.add(comboBox = new JComboBox(sortingAlgs));
+
+    //Start-pause button
+    panel.add(startButton = new JButton("START"));
+
+    //
+    panel.add(new JSlider(JSlider.HORIZONTAL, 1, 10, 5));
+
+    //Setting array size slider
+    slider = new JSlider(JSlider.HORIZONTAL, 10, 100, 30);
+    slider.setPaintLabels(true);
+    slider.setPaintTrack(true);
+    slider.setPaintTicks(true);
+    slider.setMajorTickSpacing(10);
+    panel.add(slider);
+
+    //reset-stop button
+    panel.add(new JButton("RESET"));
+
+    mainPanel.add(panel, BorderLayout.NORTH);
   }
 
   private void addWrapperPanel(){
@@ -59,38 +89,10 @@ public class View extends JFrame {
     setVisible(true);
   }
 
-  private void updateDelay(){
-
-  }
-
-  private void updateSortingAlgorithm(){
-
-  }
-
-  private void addMenuPanel(){
-    JPanel panel = new JPanel();
-    panel.setLayout(new GridLayout(2,3));
-
-    panel.add(new JTextArea("INFO 1"));
-
-
-    String[] sortingAlgs = {"BubbleSort", "QuickSort", "MergeSort"};
-    panel.add(comboBox = new JComboBox(sortingAlgs));
-
-
-    panel.add(new JButton("START"));
-    panel.add(new JSlider(JSlider.HORIZONTAL, 1, 10, 5));
-    panel.add(slider = new JSlider(JSlider.HORIZONTAL, 10, 100, 30));
-    panel.add(new JButton("RESET"));
-
-    mainPanel.add(panel, BorderLayout.NORTH);
-  }
-
   private void addFooterPanel(){
     JTextArea area = new JTextArea("Created by Krzysztof Wiśniewski");
     area.setMinimumSize(new Dimension(100, 50));
     add(area, BorderLayout.SOUTH);
-
   }
 
   public JSlider getSlider(){
@@ -99,5 +101,9 @@ public class View extends JFrame {
 
   public JComboBox getComboBox(){
     return comboBox;
+  }
+
+  public JButton getStartButton(){
+    return startButton;
   }
 }
